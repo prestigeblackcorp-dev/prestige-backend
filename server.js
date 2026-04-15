@@ -79,23 +79,22 @@ app.post("/api/create-date-lock-session", async (req, res) => {
       return res.status(400).json({ error: "Missing required fields." });
     }
 
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      mode: "payment",
-      customer_email: b.email,
-      line_items: [
-        {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: `${b.vehicle} — Date Lock Deposit`
-            },
-const baseAmount = 10000; // $100
-const fee = Math.round(baseAmount * 0.05); // 5%
-const totalAmount = baseAmount + fee;          },
-          quantity: 1
-        }
-      ],
+   const session = await stripe.checkout.sessions.create({
+  payment_method_types: ["card"],
+  mode: "payment",
+  customer_email: b.email,
+  line_items: [
+    {
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: `${b.vehicle} — Date Lock Deposit (incl. processing fee)`
+        },
+        unit_amount: totalAmount
+      },
+      quantity: 1
+    }
+  ],
       success_url: "https://prestigeblackrentals.com/pages/date-lock-success",
       cancel_url: "https://prestigeblackrentals.com/pages/book",
       metadata: {
