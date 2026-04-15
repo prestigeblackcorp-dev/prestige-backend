@@ -83,18 +83,28 @@ app.post("/api/create-date-lock-session", async (req, res) => {
   payment_method_types: ["card"],
   mode: "payment",
   customer_email: b.email,
-  line_items: [
-    {
-      price_data: {
-        currency: "usd",
-        product_data: {
-          name: `${b.vehicle} — Date Lock Deposit (incl. processing fee)`
-        },
-        unit_amount: totalAmount
+ line_items: [
+  {
+    price_data: {
+      currency: "usd",
+      product_data: {
+        name: `${b.vehicle} — Date Lock Deposit`
       },
-      quantity: 1
-    }
-  ],
+      unit_amount: 10000
+    },
+    quantity: 1
+  },
+  {
+    price_data: {
+      currency: "usd",
+      product_data: {
+        name: "Processing Fee (5%)"
+      },
+      unit_amount: Math.round(10000 * 0.05)
+    },
+    quantity: 1
+  }
+]
       success_url: "https://prestigeblackrentals.com/pages/date-lock-success",
       cancel_url: "https://prestigeblackrentals.com/pages/book",
       metadata: {
