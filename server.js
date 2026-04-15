@@ -90,8 +90,9 @@ app.post("/api/create-date-lock-session", async (req, res) => {
             product_data: {
               name: `${b.vehicle} — Date Lock Deposit`
             },
-            unit_amount: 10000
-          },
+const baseAmount = 10000; // $100
+const fee = Math.round(baseAmount * 0.05); // 5%
+const totalAmount = baseAmount + fee;          },
           quantity: 1
         }
       ],
