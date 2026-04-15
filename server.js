@@ -6,6 +6,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+console.log("ENV CHECK:", {
+  hasStripeKey: !!process.env.STRIPE_SECRET_KEY,
+  stripeKeyPrefix: process.env.STRIPE_SECRET_KEY
+    ? process.env.STRIPE_SECRET_KEY.slice(0, 7)
+    : "missing",
+  port: process.env.PORT || "missing"
+});
+
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error("Missing STRIPE_SECRET_KEY in Railway variables");
 }
