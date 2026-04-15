@@ -63,11 +63,7 @@ app.post("/api/create-date-lock-session", async (req, res) => {
         pickup_date: b.pickup_date || "",
         return_date: b.return_date || "",
         pickup_time: b.pickup_time || "",
-        dropoff_time: b.dropoff_time || "",
-        booking_type: b.booking_type || "",
-        hourly_date: b.hourly_date || "",
-        hourly_hours: b.hourly_hours || "",
-        hourly_start_time: b.hourly_start_time || ""
+        dropoff_time: b.dropoff_time || ""
       }
     });
 
