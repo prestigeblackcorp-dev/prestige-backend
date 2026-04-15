@@ -39,26 +39,20 @@ app.post("/api/create-date-lock-session", async (req, res) => {
       success_url: "https://prestigeblackrentals.com/pages/date-lock-success",
       cancel_url: "https://prestigeblackrentals.com/pages/book",
       metadata: {
-        source: "Prestige Black Booking Form",
-        vehicle: b.vehicle || "",
-        booking_type: b.booking_type || "",
-        name: b.name || "",
-        phone: b.phone || "",
-        email: b.email || "",
-        pickup_date: b.pickup_date || "",
-        return_date: b.return_date || "",
-        pickup_time: b.pickup_time || "",
-        dropoff_time: b.dropoff_time || "",
-        hourly_date: b.hourly_date || "",
-        hourly_hours: b.hourly_hours || "",
-        hourly_start_time: b.hourly_start_time || ""
+        vehicle: b.vehicle,
+        name: b.name,
+        phone: b.phone,
+        email: b.email,
+        pickup_date: b.pickup_date,
+        return_date: b.return_date
       }
     });
 
-    return res.json({ url: session.url });
+    res.json({ url: session.url });
+
   } catch (err) {
-    console.error("Stripe session error:", err);
-    return res.status(500).json({ error: "Unable to create payment session." });
+    console.error(err);
+    res.status(500).json({ error: "Stripe error" });
   }
 });
 
