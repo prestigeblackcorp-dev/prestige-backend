@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import cors from "cors";
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
@@ -21,7 +22,11 @@ if (!process.env.STRIPE_SECRET_KEY) {
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 app.get("/", (_req, res) => {
-  res.send("Backend running");
+  res.status(200).send("Backend running");
+});
+
+app.get("/health", (_req, res) => {
+  res.status(200).json({ ok: true });
 });
 
 app.post("/api/create-date-lock-session", async (req, res) => {
@@ -56,19 +61,25 @@ app.post("/api/create-date-lock-session", async (req, res) => {
         phone: b.phone || "",
         email: b.email || "",
         pickup_date: b.pickup_date || "",
-        return_date: b.return_date || ""
+        return_date: b.return_date || "",
+        pickup_time: b.pickup_time || "",
+        dropoff_time: b.dropoff_time || "",
+        booking_type: b.booking_type || "",
+        hourly_date: b.hourly_date || "",
+        hourly_hours: b.hourly_hours || "",
+        hourly_start_time: b.hourly_start_time || ""
       }
     });
 
-    res.json({ url: session.url });
-
+    return res.json({ url: session.url });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Stripe error" });
+    console.error("Stripe session error:", err);
+    return res.status(500).json({ error: "Stripe error" });
   }
 });
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
+const port = process.env.PORT || 8080;
+
+app.listen(port, "0.0.0.0", () => {
   console.log(`Running on ${port}`);
 });
