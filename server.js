@@ -6,6 +6,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error("Missing STRIPE_SECRET_KEY in Railway variables");
+}
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 app.get("/", (_req, res) => {
@@ -39,12 +43,12 @@ app.post("/api/create-date-lock-session", async (req, res) => {
       success_url: "https://prestigeblackrentals.com/pages/date-lock-success",
       cancel_url: "https://prestigeblackrentals.com/pages/book",
       metadata: {
-        vehicle: b.vehicle,
-        name: b.name,
-        phone: b.phone,
-        email: b.email,
-        pickup_date: b.pickup_date,
-        return_date: b.return_date
+        vehicle: b.vehicle || "",
+        name: b.name || "",
+        phone: b.phone || "",
+        email: b.email || "",
+        pickup_date: b.pickup_date || "",
+        return_date: b.return_date || ""
       }
     });
 
